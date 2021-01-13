@@ -1,0 +1,1 @@
+mpicc -g   CMakeFiles/CW5.dir/prefix.c.o  -o CW5 

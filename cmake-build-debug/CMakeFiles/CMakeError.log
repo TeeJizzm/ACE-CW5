@@ -1,0 +1,34 @@
+The MPI test test_mpi for C in mode normal failed to compile with the following output:
+Change Dir: /home/teej/Documents/CW5/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_d52ad/fast && /usr/bin/make  -f CMakeFiles/cmTC_d52ad.dir/build.make CMakeFiles/cmTC_d52ad.dir/build
+make[1]: Entering directory '/home/teej/Documents/CW5/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d52ad.dir/test_mpi.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_d52ad.dir/test_mpi.c.o   -c /home/teej/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/bin/cmake/linux/share/cmake-3.17/Modules/FindMPI/test_mpi.c
+/home/teej/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/bin/cmake/linux/share/cmake-3.17/Modules/FindMPI/test_mpi.c:1:10: fatal error: mpi.h: No such file or directory
+    1 | #include <mpi.h>
+      |          ^~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_d52ad.dir/build.make:86: CMakeFiles/cmTC_d52ad.dir/test_mpi.c.o] Error 1
+make[1]: Leaving directory '/home/teej/Documents/CW5/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:141: cmTC_d52ad/fast] Error 2
+
+
+
+The MPI test test_mpi for C in mode normal failed to compile with the following output:
+Change Dir: /home/teej/Documents/CW5/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_1d904/fast && /usr/bin/make  -f CMakeFiles/cmTC_1d904.dir/build.make CMakeFiles/cmTC_1d904.dir/build
+make[1]: Entering directory '/home/teej/Documents/CW5/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_1d904.dir/test_mpi.c.o
+/usr/bin/cc   -std=gnu99 -o CMakeFiles/cmTC_1d904.dir/test_mpi.c.o   -c /home/teej/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/bin/cmake/linux/share/cmake-3.17/Modules/FindMPI/test_mpi.c
+/home/teej/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/202.7660.37/bin/cmake/linux/share/cmake-3.17/Modules/FindMPI/test_mpi.c:1:10: fatal error: mpi.h: No such file or directory
+    1 | #include <mpi.h>
+      |          ^~~~~~~
+compilation terminated.
+make[1]: *** [CMakeFiles/cmTC_1d904.dir/build.make:86: CMakeFiles/cmTC_1d904.dir/test_mpi.c.o] Error 1
+make[1]: Leaving directory '/home/teej/Documents/CW5/cmake-build-debug/CMakeFiles/CMakeTmp'
+make: *** [Makefile:141: cmTC_1d904/fast] Error 2
+
+
+
