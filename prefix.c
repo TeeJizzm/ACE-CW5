@@ -89,12 +89,12 @@ int main(int argc, char *argv[]) {
 
         genArray = (int *) calloc(arraySize, sizeof(int)); // Generate padded size with 0's
 
-        for (size_t i = 0; i < inputSize; ++i) {
-            //genArray[i] = rand() % 50; // Generate random numbers for the wanted array size, keeping 0 padding
-            genArray[i] = i+1;
+        for (size_t i = 0; i < inputSize; ++i) { // Keep 0 padding for unused array values
+            genArray[i] = rand() % 50; // Generate random numbers for the wanted array size
+            //genArray[i] = i + 1; // Generate a simple array of ascending numbers
         }
 
-        //*/ Debug: Output array
+        /*/ Debug: Output array
         printf("\nArray Values: [ ");
         for (size_t i = 0; i < arraySize; ++i) {
             printf("%d ", genArray[i]);
@@ -216,9 +216,9 @@ int main(int argc, char *argv[]) {
     start = clock();
 
     if (rankID == root) {
-        serArray = calloc(arraySize, sizeof(int));
+        serArray = calloc(arraySize, sizeof(int)); // allocate memory for output
 
-        serialSolve(genArray, serArray, arraySize);
+        serialSolve(genArray, serArray, arraySize); // run serial calculation
     }
 
     end = clock();
@@ -229,9 +229,8 @@ int main(int argc, char *argv[]) {
     /* [ ======================================================== ] */
     if (rankID == root) { // Parallel no longer needed
 
-        // Output Timings and Arrays
-        printf("\nParallel calculation took: %fs", parTime);
-        printf("\nSerial calculation took: %fs", serTime);
+        // Output Arrays for debug and comparison
+        //*/
         printf("\nParallel Array: [ ");
         for (size_t i = 0; i < arraySize; ++i) {
             printf("%d ", parArray[i]);
@@ -241,21 +240,24 @@ int main(int argc, char *argv[]) {
             printf("%d ", serArray[i]);
         }
         printf("]\n");
+        //*/
 
-        // Check validity
-        int check = 1;
-        for (int i = 0; i < arraySize; ++i) {
-            if (serArray[i] != parArray[i]) {
+        // Check if arrays are equal
+        int check = 1; // validity checker
+        for (int i = 0; i < arraySize; ++i) { // Check each array element
+            if (serArray[i] != parArray[i]) { // if an element doesn't match, fail test
                 check = 0;
-                break;
-            } else {
+                break; // exit loop
             }
         }
-        if (check == 1) printf("\nOutputs match, success!\n");
+        if (check == 1)
+            printf("Outputs match, success!\n");
         else
-            printf("\nOutputs do not match, failed!\n");
+            printf("Outputs do not match, failed!\n");
+        printf("Parallel calculation took: %fs\n", parTime); // parallel time
+        printf("Serial calculation took: %fs\n", serTime); // serial time
 
-    }
+    } // End comparisons
 
     /* [ ======================================================== ] */
     /* [ ==================== Clean-up Phase ==================== ] */
