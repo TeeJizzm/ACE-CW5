@@ -116,38 +116,89 @@ int main(int argc, char *argv[]) {
     /* [ ================= Prefix Scan ================= ] */
     // The algorithm for calculating the running total in parallel
 
+    // Variables required
+    int step = 1; // iterative step for up phase
+    int minor; // distance from step value to wanted value, half of step
+    int sendProc, recvProc, sendChnk, recvChnk; // Send and receive
+    // Identifies processes and chunks to be moved
+
     start = clock(); // Start timer for parallel solve
-
-
-
-
 
     /* [ ================= Up Phase ================= ] */
 
-    int step = 1; // iterative step for up phase
-    int minor; // half of step, sent value
-
-
     while (step < chunkSize) { // performed on arrays per process, no memory movement
-        minor = step;
-        step *= 2;
+        minor = step; // previous step size moving up
+        step *= 2; // double step size each time
 
-        for (size_t i = step - 1; i < chunkSize; i += step) { // For all values of the array upwards
-            chunk[i- 1] += chunk[i - minor]; // Running total
+        for (int i = step - 1; i < chunkSize; i += step) { // For all values of the array upwards
+            chunk[i] += chunk[i - minor]; // Running total
         }
     }
     while (step < arraySize) { // performed on the rest of the array, with memory movement
-        minor = step;
-        step *= 2;
+        minor = step; // previous step size moving up
+        step *= 2; // double step size each time
 
+        for (int i = step - 1; i < arraySize; i += step) {
+            sendProc = i - minor / chunkSize; // find sending process
+            recvProc = i / chunkSize; // find receiving process
 
-    }
+            if (rankID == sendProc) { // only sending process
+                sendChnk = (i - minor) % chunkSize;
 
+                MPI_Send( &chunk[sendChnk], 1, MPI_INT, recvProc, 0, MPI_COMM_WORLD);
 
+            } else if (rankID == recvProc) { // only receiving process
+                recvChnk = i % chunkSize;
 
+                int receive = 0;
+                MPI_Recv( &receive, 1, MPI_INT, sendProc, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
+                chunk[recvChnk] += receive;
+            } // end if
+        } // end for
+    } // exit while when step is as large as arraySize
 
     /* [ ================= Down Phase ================= ] */
+
+    while ( step >= chunkSize ) {
+        step = minor; // moving down powers of 2
+        minor /= 2; // minor leads
+
+        for (int i = step - 1 + minor; i < arraySize; i += step) {
+            sendProc = i - minor / chunkSize;
+            recvProc = i / chunkSize;
+
+            if (rankID == sendProc) { // only sending process
+                sendChnk = (i - minor) % chunkSize;
+
+                MPI_Send( &chunk[sendChnk], 1, MPI_INT, recvProc, 0, MPI_COMM_WORLD);
+
+            } else if (rankID == recvProc) { // only receiving process
+                recvChnk = i % chunkSize;
+
+                int receive = 0;
+                MPI_Recv( &receive, 1, MPI_INT, sendProc, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+                chunk[recvChnk] += receive;
+            } // end if
+        } // end for
+    } // end while when step is smaller than chunkSize
+
+    while ( step > 2 ) { // perform down phase calculation per chunk if applicable
+        step = minor;
+        minor /= 2;
+
+        for (int i = step - 1 + minor; i < arraySize; i += step) {
+            chunk[i] += chunk[i - minor];
+        } // end for
+    } // end at step < 2, minimum step size met
+
+
+
+
+
+
+
 
 
     end = clock();
