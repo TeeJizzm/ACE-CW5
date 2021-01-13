@@ -251,9 +251,9 @@ int main(int argc, char *argv[]) {
             } else {
             }
         }
-        if (check == 1) printf("\nOutputs match, success!");
+        if (check == 1) printf("\nOutputs match, success!\n");
         else
-            printf("\nOutputs do not match, failed!");
+            printf("\nOutputs do not match, failed!\n");
 
     }
 
